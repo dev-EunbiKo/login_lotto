@@ -48,7 +48,10 @@ class _LottoState extends State<Lotto> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 83, 125, 198),
       appBar: AppBar(
-        title: Text('Lotto App'),
+        title: Text(
+          '로또또 로또또',
+          style: TextStyle(fontFamily: 'JetBrainsMono', fontSize: 30),
+        ),
         backgroundColor: const Color.fromARGB(255, 208, 150, 3),
         centerTitle: true,
       ),
