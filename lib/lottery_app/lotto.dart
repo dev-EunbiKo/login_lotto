@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:login_lotto/lottery_app/lotto_ball.dart';
 import 'package:lottie/lottie.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Lotto extends StatefulWidget {
   const Lotto({super.key});
@@ -14,22 +15,32 @@ class _LottoState extends State<Lotto> {
   List<List<int>> listLottery = [];
 
   void _createNumber() {
-    setState(() {
-      // 로또 번호 생성 로직
-      List<int> lottery = [];
-      while (true) {
-        var rnd = Random().nextInt(45) + 1;
-        if (!lottery.contains(rnd)) {
-          lottery.add(rnd);
-        }
+    if (listLottery.length < 15) {
+      setState(() {
+        // 로또 번호 생성 로직
+        List<int> lottery = [];
+        while (true) {
+          var rnd = Random().nextInt(45) + 1;
+          if (!lottery.contains(rnd)) {
+            lottery.add(rnd);
+          }
 
-        if (lottery.length == 6) {
-          break;
+          if (lottery.length == 6) {
+            break;
+          }
         }
-      }
-      lottery.sort();
-      listLottery.add(lottery);
-    });
+        lottery.sort();
+        listLottery.add(lottery);
+      });
+    } else {
+      Fluttertoast.showToast(
+        msg: "15번까지만 생성 가능합니다.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+      );
+    }
   }
 
   @override
