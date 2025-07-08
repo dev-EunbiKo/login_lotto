@@ -45,37 +45,45 @@ class _LottoState extends State<Lotto> {
         child: Column(
           children: [
             Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsets.all(8),
-                itemCount: listLottery.length,
-                itemBuilder: (context, index) {
-                  var path_1 = 'svg/${listLottery[index][0]}.svg';
-                  var path_2 = 'svg/${listLottery[index][1]}.svg';
-                  var path_3 = 'svg/${listLottery[index][2]}.svg';
-                  var path_4 = 'svg/${listLottery[index][3]}.svg';
-                  var path_5 = 'svg/${listLottery[index][4]}.svg';
-                  var path_6 = 'svg/${listLottery[index][5]}.svg';
-                  return Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        LottoBall(path: path_1),
-                        const SizedBox(width: 2),
-                        LottoBall(path: path_2),
-                        const SizedBox(width: 2),
-                        LottoBall(path: path_3),
-                        const SizedBox(width: 2),
-                        LottoBall(path: path_4),
-                        const SizedBox(width: 2),
-                        LottoBall(path: path_5),
-                        const SizedBox(width: 2),
-                        LottoBall(path: path_6),
-                        const SizedBox(width: 2),
-                      ],
-                    ),
-                  );
-                },
+              child: RawScrollbar(
+                thumbColor: const Color.fromARGB(255, 122, 157, 218),
+                thumbVisibility: true,
+                trackVisibility: true,
+                thickness: 15,
+                radius: const Radius.circular(10),
+                interactive: true,
+                child: ListView.builder(
+                  padding: const EdgeInsets.all(8),
+                  itemCount: listLottery.length,
+                  itemBuilder: (context, index) {
+                    var path_1 = 'svg/${listLottery[index][0]}.svg';
+                    var path_2 = 'svg/${listLottery[index][1]}.svg';
+                    var path_3 = 'svg/${listLottery[index][2]}.svg';
+                    var path_4 = 'svg/${listLottery[index][3]}.svg';
+                    var path_5 = 'svg/${listLottery[index][4]}.svg';
+                    var path_6 = 'svg/${listLottery[index][5]}.svg';
+                    return Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          LottoBall(path: path_1),
+                          const SizedBox(width: 2),
+                          LottoBall(path: path_2),
+                          const SizedBox(width: 2),
+                          LottoBall(path: path_3),
+                          const SizedBox(width: 2),
+                          LottoBall(path: path_4),
+                          const SizedBox(width: 2),
+                          LottoBall(path: path_5),
+                          const SizedBox(width: 2),
+                          LottoBall(path: path_6),
+                          const SizedBox(width: 2),
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
             SizedBox(
