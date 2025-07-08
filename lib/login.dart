@@ -61,9 +61,10 @@ class _LoginState extends State<Login> {
                   ).animate().fade(delay: 500.ms).slideX(begin: 2, end: 0),
                   const SizedBox(height: 25),
                   MyTextfield(
-                    hintText: "UserName",
+                    hintText: "Email",
                     obscureText: false,
                     controller: emailController,
+                    emailType: TextInputType.emailAddress,
                   ),
                   const SizedBox(height: 25),
                   MyTextfield(

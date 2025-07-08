@@ -4,12 +4,14 @@ class MyTextfield extends StatelessWidget {
   final String hintText;
   final bool obscureText;
   final TextEditingController controller;
+  final TextInputType? emailType;
 
   const MyTextfield({
     super.key,
     required this.hintText,
     required this.obscureText,
     required this.controller,
+    this.emailType,
   });
 
   @override
@@ -17,6 +19,7 @@ class MyTextfield extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25),
       child: TextField(
+        keyboardType: emailType,
         controller: controller,
         obscureText: obscureText, // 패스워드 보안
         decoration: InputDecoration(
