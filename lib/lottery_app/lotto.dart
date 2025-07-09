@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:login_lotto/lottery_app/dialog.dart';
 import 'dart:math';
 import 'package:login_lotto/lottery_app/lotto_ball.dart';
 import 'package:lottie/lottie.dart';
@@ -13,6 +14,7 @@ class Lotto extends StatefulWidget {
 
 class _LottoState extends State<Lotto> {
   List<List<int>> listLottery = [];
+  final ScrollController _scrollController = ScrollController();
 
   void _createNumber() {
     if (listLottery.length < 15) {
@@ -43,23 +45,23 @@ class _LottoState extends State<Lotto> {
     }
   }
 
+  void showPopup(context, String title, String number) {
+    showDialog(
+      context: context,
+      builder: (context) => PopupDialog(title: title, number: number),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 83, 125, 198),
-      appBar: AppBar(
-        title: Text(
-          '로또또 로또또',
-          style: TextStyle(fontFamily: 'JetBrainsMono', fontSize: 30),
-        ),
-        backgroundColor: const Color.fromARGB(255, 208, 150, 3),
-        centerTitle: true,
-      ),
+      backgroundColor: const Color.fromARGB(255, 203, 217, 239),
       body: Center(
         child: Column(
           children: [
             Expanded(
               child: RawScrollbar(
+                controller: _scrollController,
                 thumbColor: const Color.fromARGB(255, 122, 157, 218),
                 thumbVisibility: true,
                 trackVisibility: true,
@@ -67,9 +69,11 @@ class _LottoState extends State<Lotto> {
                 radius: const Radius.circular(10),
                 interactive: true,
                 child: ListView.builder(
+                  controller: _scrollController,
                   padding: const EdgeInsets.all(8),
                   itemCount: listLottery.length,
                   itemBuilder: (context, index) {
+                    int currentIndex = index + 1;
                     var path_1 = 'svg/${listLottery[index][0]}.svg';
                     var path_2 = 'svg/${listLottery[index][1]}.svg';
                     var path_3 = 'svg/${listLottery[index][2]}.svg';
@@ -78,22 +82,53 @@ class _LottoState extends State<Lotto> {
                     var path_6 = 'svg/${listLottery[index][5]}.svg';
                     return Padding(
                       padding: const EdgeInsets.all(8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          LottoBall(path: path_1),
-                          const SizedBox(width: 2),
-                          LottoBall(path: path_2),
-                          const SizedBox(width: 2),
-                          LottoBall(path: path_3),
-                          const SizedBox(width: 2),
-                          LottoBall(path: path_4),
-                          const SizedBox(width: 2),
-                          LottoBall(path: path_5),
-                          const SizedBox(width: 2),
-                          LottoBall(path: path_6),
-                          const SizedBox(width: 2),
-                        ],
+                      child: ListTile(
+                        title: Text(
+                          '$currentIndex번째 추첨 번호',
+                          style: TextStyle(
+                            fontFamily: 'NanumGothicCoding',
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        trailing: IconButton(
+                          onPressed: () {
+                            showPopup(
+                              context,
+                              currentIndex.toString(),
+                              listLottery[index].toString(),
+                            );
+                          },
+                          icon: Icon(
+                            Icons.keyboard_arrow_right_outlined,
+                            color: Colors.white,
+                          ),
+                          iconSize: 30.0,
+                        ),
+                        contentPadding: EdgeInsets.zero,
+                        subtitle: Scrollbar(
+                          trackVisibility: true,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                LottoBall(path: path_1),
+                                const SizedBox(width: 2),
+                                LottoBall(path: path_2),
+                                const SizedBox(width: 2),
+                                LottoBall(path: path_3),
+                                const SizedBox(width: 2),
+                                LottoBall(path: path_4),
+                                const SizedBox(width: 2),
+                                LottoBall(path: path_5),
+                                const SizedBox(width: 2),
+                                LottoBall(path: path_6),
+                                const SizedBox(width: 2),
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
                     );
                   },
@@ -108,10 +143,47 @@ class _LottoState extends State<Lotto> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.black,
-        onPressed: _createNumber, // 메서드의 참조만 전달
-        child: const Icon(Icons.add, color: Colors.white),
+      floatingActionButton: Stack(
+        children: [
+          Positioned(
+            right:
+                MediaQuery.of(context).orientation == Orientation.portrait
+                    ? 10
+                    : 76,
+            bottom:
+                MediaQuery.of(context).orientation == Orientation.portrait
+                    ? 76
+                    : 10,
+            child: FloatingActionButton(
+              backgroundColor: Colors.black,
+              onPressed: _createNumber, // 메서드의 참조만 전달
+              tooltip: "Create Another Number Set",
+              heroTag: 'createNumberBtn',
+              child: const Icon(Icons.add, color: Colors.white),
+            ),
+          ),
+          Positioned(
+            right:
+                MediaQuery.of(context).orientation == Orientation.portrait
+                    ? 10
+                    : 6,
+            bottom:
+                MediaQuery.of(context).orientation == Orientation.portrait
+                    ? 6
+                    : 10,
+            child: FloatingActionButton(
+              backgroundColor: Colors.black,
+              tooltip: "Clear Numbers",
+              heroTag: 'clearNumberBtn',
+              onPressed: () {
+                setState(() {
+                  listLottery.clear();
+                });
+              }, // 메서드의 참조만 전달
+              child: const Icon(Icons.refresh_rounded, color: Colors.white),
+            ),
+          ),
+        ],
       ),
     );
   }

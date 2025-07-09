@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:login_lotto/lottery_app/layout_lotto.dart';
 import 'package:login_lotto/widget/my_container.dart';
 import 'package:login_lotto/widget/my_textfield.dart';
-import 'package:login_lotto/lottery_app/lotto.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -79,7 +79,9 @@ class _LoginState extends State<Login> {
                           passwordController.text == '123456') {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Lotto()),
+                          MaterialPageRoute(
+                            builder: (context) => LayoutLotto(),
+                          ),
                         );
                       } else if (emailController.text == 'email@email.com' &&
                           passwordController.text != '123456') {
