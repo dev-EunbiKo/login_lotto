@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:login_lotto/lottery_app/layout_lotto.dart';
-import 'package:login_lotto/register.dart';
 import 'package:login_lotto/widget/my_container.dart';
 import 'package:login_lotto/widget/my_textfield.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class Register extends StatefulWidget {
+  const Register({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _LoginState extends State<Login> {
+class _RegisterState extends State<Register> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -31,7 +30,7 @@ class _LoginState extends State<Login> {
               child: Column(
                 children: [
                   const SizedBox(height: 80),
-                  Image.asset("images/codingchef.png", width: 150, height: 150)
+                  Image.asset("images/signup.png", width: 150, height: 150)
                       .animate()
                       .fade()
                       .slideY(begin: -3, end: 0)
@@ -43,7 +42,7 @@ class _LoginState extends State<Login> {
                       ),
                   const SizedBox(height: 5),
                   Text(
-                        "Welcome Back!",
+                        "Welcome!",
                         style: TextStyle(
                           color: Colors.grey[700],
                           fontSize: 20,
@@ -56,7 +55,7 @@ class _LoginState extends State<Login> {
                       .tint(color: Colors.purple, delay: 1000.ms),
                   const SizedBox(height: 5),
                   Text(
-                    "Sign in to Continue",
+                    "Sign up to Continue",
                     style: TextStyle(color: Colors.grey[700]),
                   ).animate().fade(delay: 500.ms).slideX(begin: 2, end: 0),
                   const SizedBox(height: 25),
@@ -74,40 +73,32 @@ class _LoginState extends State<Login> {
                   ),
                   const SizedBox(height: 25),
                   GestureDetector(
-                    onTap: () {
-                      // if-else 문으로 이메일과 패스워드 검증 구현
-                      if (emailController.text == 'email@email.com' &&
-                          passwordController.text == '123456') {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LayoutLotto(),
-                          ),
-                        );
-                      } else if (emailController.text == 'email@email.com' &&
-                          passwordController.text != '123456') {
-                        // 스낵바
+                    onTap: () async {
+                      try {
+                        final newUser = await FirebaseAuth.instance
+                            .createUserWithEmailAndPassword(
+                              email: emailController.text,
+                              password: passwordController.text,
+                            );
+
+                        if (newUser.user != null) {
+                          if (!context.mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Sign up Successfully"),
+                              backgroundColor: Colors.blue,
+                            ),
+                          );
+                        }
+                      } catch (e) {
+                        debugPrint(e.toString());
+                        if (!context.mounted) return;
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('패스워드를 확인하세요.'),
-                            duration: Duration(seconds: 5),
-                          ),
-                        );
-                      } else if (emailController.text != 'email@email.com' &&
-                          passwordController.text == '123456') {
-                        // 스낵바
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('이메일을 확인하세요.'),
-                            duration: Duration(seconds: 5),
-                          ),
-                        );
-                      } else {
-                        // 스낵바
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('로그인 정보를 확인하세요.'),
-                            duration: Duration(seconds: 5),
+                          const SnackBar(
+                            content: Text(
+                              "Something Wrong with a Sign Up Process!",
+                            ),
+                            backgroundColor: Colors.blue,
                           ),
                         );
                       }
@@ -125,7 +116,7 @@ class _LoginState extends State<Login> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Not a member?",
+                        "Already a member?",
                         style: TextStyle(color: Colors.grey[700]),
                       ).animate().fade().slideX(
                         begin: -3,
@@ -133,16 +124,9 @@ class _LoginState extends State<Login> {
                         duration: 300.ms,
                       ),
                       TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const Register(),
-                            ),
-                          );
-                        },
+                        onPressed: () {},
                         child: const Text(
-                          "Register Now",
+                          "Log In",
                           style: TextStyle(
                             color: Colors.blue,
                             fontWeight: FontWeight.bold,
