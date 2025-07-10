@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:login_lotto/lottery_app/lotto.dart';
 import 'package:login_lotto/responsive/breakpoint.dart';
 import 'package:login_lotto/responsive/responsive_center.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LayoutLotto extends StatelessWidget {
   const LayoutLotto({super.key});
@@ -21,6 +22,16 @@ class LayoutLotto extends StatelessWidget {
         ),
         backgroundColor: const Color.fromARGB(255, 21, 11, 109),
         centerTitle: true,
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.exit_to_app_sharp, color: Colors.white),
+          ),
+        ],
       ),
       body: const ResponsiveCenter(
         maxContentWidth: Breakpoint.deskTop,
