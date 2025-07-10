@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'package:login_lotto/layout.dart';
 
-void main() {
+void main() async {
+  /// 초기화 과정에서 위젯 바인딩을 보장하기 위해 사용
+  /// 다른 플러그인이나 서비스의 초기화를 안전하게 수행할 수 있게 하는 역할
+  WidgetsFlutterBinding.ensureInitialized();
+
+  /// Firebase SDK 초기화를 위한 메서드 p.660
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
